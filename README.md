@@ -2,4 +2,4 @@
 
 Using Deno.
 
-`deno run --allow-read a.ts`
+`deno run --allow-read --watch a.ts`
