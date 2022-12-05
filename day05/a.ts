@@ -8,8 +8,7 @@ const parsedStacks: { [key: string]: (string | undefined)[] } = stacks
   .map((x) => {
     return Array.from({ length: 9 }, (_, index) => index * 4 + 1).reduce(
       (acc, value, index) => {
-        const col = `col${index}` as KeyType;
-        acc[col] = x[value] === " " ? undefined : x[value];
+        acc[`col${index}`] = x[value] === " " ? undefined : x[value];
         return acc;
       },
       {} as { [key: string]: string | undefined }
