@@ -10,16 +10,14 @@ interface Directory extends File {
   children: (File | Directory)[];
 }
 
+const dirSizes: number[] = [];
 function updateSize(directory: Directory): number {
   let size = 0;
   for (const child of directory.children) {
-    if ("children" in child) {
-      size += updateSize(child);
-    } else {
-      size += child.size;
-    }
+    size += "children" in child ? updateSize(child) : child.size;
   }
   directory.size = size;
+  dirSizes.push(size);
 
   return size;
 }
@@ -75,38 +73,12 @@ function parseInput(input: string): Directory {
   return rootDirectory;
 }
 
-function part1(directory: Directory): number {
-  let size = 0;
-  if (directory.size <= 100000) {
-    size += directory.size;
-  }
-  for (const child of directory.children) {
-    if ("children" in child) {
-      size += part1(child);
-    }
-  }
-  return size;
-}
+const fs = parseInput(ipt);
 
-const root = parseInput(ipt);
+const part1 = dirSizes.filter((size) => size <= 100000).reduce((a, b) => a + b);
+console.log("part1: ", part1);
 
-console.log("part1: ", part1(root));
-
-function part2(directory: Directory, needToFree: number): number {
-  let smallest = Infinity;
-  if (directory.size >= needToFree) {
-    smallest = directory.size;
-  }
-  for (const child of directory.children) {
-    if ("children" in child) {
-      const childSmallest = part2(child, needToFree);
-
-      if (childSmallest < smallest) {
-        smallest = childSmallest;
-      }
-    }
-  }
-  return smallest;
-}
-
-console.log("part2:", part2(root, 30000000 - (70000000 - root.size)));
+const part2 = dirSizes
+  .filter((size) => size >= 30000000 - (70000000 - fs.size))
+  .sort((a, b) => a - b)[0];
+console.log("part2:", part2);
