@@ -105,4 +105,4 @@ pathArr.forEach((step) => {
 });
 
 const answer = 1000 * (pos[0] + 1) + 4 * (pos[1] + 1) + facing;
-console.log(answer); //27492
+console.log(answer);
